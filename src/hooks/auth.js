@@ -6,15 +6,17 @@ import { useRouter } from 'next/router'
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
 
-    const { data: user, error, mutate } = useSWR('/api/user', () =>
-        axios
-            .get('/api/user')
-            .then(res => res.data)
-            .catch(error => {
-                if (error.response.status !== 409) throw error
+    const { data: user, error, mutate, isLoading: loading } = useSWR(
+        '/api/user',
+        () =>
+            axios
+                .get('/api/user')
+                .then(res => res.data)
+                .catch(error => {
+                    if (error.response.status !== 409) throw error
 
-                router.push('/verify-email')
-            }),
+                    router.push('/verify-email')
+                }),
     )
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
@@ -98,6 +100,52 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         window.location.pathname = '/login'
     }
 
+    const updateLogo = async ({ setErrors, setStatus, id, logo }) => {
+        await csrf()
+
+        setErrors([])
+
+        const formData = new FormData()
+        formData.append('logo', logo)
+
+        axios
+            .post(`/api/setting/logo/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            .then(res => {
+                setStatus(res.data.message)
+                mutate()
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+
+                setErrors(error.response.data.errors)
+            })
+    }
+
+    const updateName = async ({ setErrors, setStatus, nama }) => {
+        await csrf()
+
+        setErrors([])
+
+        const formData = new FormData()
+        formData.append('nama', nama)
+
+        axios
+            .post('/api/setting', formData)
+            .then(res => {
+                setStatus(res.data.message)
+                mutate()
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+
+                setErrors(error.response.data.errors)
+            })
+    }
+
     useEffect(() => {
         if (middleware === 'guest' && redirectIfAuthenticated && user)
             router.push(redirectIfAuthenticated)
@@ -111,11 +159,14 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     return {
         user,
+        loading,
         register,
         login,
         forgotPassword,
         resetPassword,
         resendEmailVerification,
         logout,
+        updateLogo,
+        updateName,
     }
 }

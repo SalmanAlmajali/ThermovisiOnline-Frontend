@@ -44,7 +44,7 @@ const Register = () => {
                 <form onSubmit={submitForm}>
                     {/* Name */}
                     <div>
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="name">Nama</Label>
 
                         <Input
                             id="name"
@@ -77,7 +77,7 @@ const Register = () => {
 
                     {/* Password */}
                     <div className="mt-4">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Kata sandi</Label>
 
                         <Input
                             id="password"
@@ -98,7 +98,7 @@ const Register = () => {
                     {/* Confirm Password */}
                     <div className="mt-4">
                         <Label htmlFor="passwordConfirmation">
-                            Confirm Password
+                            Konfirmasi kata sandi
                         </Label>
 
                         <Input
@@ -122,10 +122,10 @@ const Register = () => {
                         <Link
                             href="/login"
                             className="underline text-sm text-gray-600 hover:text-gray-900">
-                            Already registered?
+                            Sudah terdaftar?
                         </Link>
 
-                        <Button className="ml-4">Register</Button>
+                        <Button className="ml-4">Daftar</Button>
                     </div>
                 </form>
             </AuthCard>

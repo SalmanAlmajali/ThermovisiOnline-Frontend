@@ -76,7 +76,7 @@ const Login = () => {
 
                     {/* Password */}
                     <div className="mt-4">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Kata sandi</Label>
 
                         <Input
                             id="password"
@@ -110,7 +110,7 @@ const Login = () => {
                             />
 
                             <span className="ml-2 text-sm text-gray-600">
-                                Remember me
+                                Ingat saya
                             </span>
                         </label>
                     </div>
@@ -119,10 +119,10 @@ const Login = () => {
                         <Link
                             href="/forgot-password"
                             className="underline text-sm text-gray-600 hover:text-gray-900">
-                            Forgot your password?
+                            Lupa kata sandi Anda?
                         </Link>
 
-                        <Button className="ml-3">Login</Button>
+                        <Button className="ml-3">Masuk</Button>
                     </div>
                 </form>
             </AuthCard>

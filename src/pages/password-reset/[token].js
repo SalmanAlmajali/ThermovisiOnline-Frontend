@@ -69,7 +69,7 @@ const PasswordReset = () => {
 
                     {/* Password */}
                     <div className="mt-4">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Kata sandi</Label>
                         <Input
                             id="password"
                             type="password"
@@ -88,7 +88,7 @@ const PasswordReset = () => {
                     {/* Confirm Password */}
                     <div className="mt-4">
                         <Label htmlFor="passwordConfirmation">
-                            Confirm Password
+                            Konfirmasi kata sandi
                         </Label>
 
                         <Input
@@ -109,7 +109,7 @@ const PasswordReset = () => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4">
-                        <Button>Reset Password</Button>
+                        <Button>Atur Ulang Kata Sandi</Button>
                     </div>
                 </form>
             </AuthCard>

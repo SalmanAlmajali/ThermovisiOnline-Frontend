@@ -23,30 +23,31 @@ const VerifyEmail = () => {
                     </Link>
                 }>
                 <div className="mb-4 text-sm text-gray-600">
-                    Thanks for signing up! Before getting started, could you
-                    verify your email address by clicking on the link we just
-                    emailed to you? If you didn't receive the email, we will
-                    gladly send you another.
+                    Terima kasih telah mendaftar! Sebelum memulai, bisakah Anda
+                    memverifikasi alamat email Anda dengan mengeklik tautan yang
+                    baru saja kami kirimkan melalui email kepada Anda? Jika Anda
+                    tidak menerima email tersebut, kami dengan senang hati akan
+                    mengirimkan email lainnya kepada Anda.
                 </div>
 
                 {status === 'verification-link-sent' && (
                     <div className="mb-4 font-medium text-sm text-green-600">
-                        A new verification link has been sent to the email
-                        address you provided during registration.
+                        Tautan verifikasi baru telah dikirim ke email alamat
+                        yang Anda berikan saat pendaftaran.
                     </div>
                 )}
 
                 <div className="mt-4 flex items-center justify-between">
                     <Button
                         onClick={() => resendEmailVerification({ setStatus })}>
-                        Resend Verification Email
+                        Mengirim ulang email verifikasi
                     </Button>
 
                     <button
                         type="button"
                         className="underline text-sm text-gray-600 hover:text-gray-900"
                         onClick={logout}>
-                        Logout
+                        Keluar
                     </button>
                 </div>
             </AuthCard>

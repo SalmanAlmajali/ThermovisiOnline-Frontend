@@ -5,7 +5,7 @@ import NavLink from '@/components/NavLink'
 import ResponsiveNavLink, {
     ResponsiveNavButton,
 } from '@/components/ResponsiveNavLink'
-import { DropdownButton } from '@/components/DropdownLink'
+import DropdownLink, { DropdownButton } from '@/components/DropdownLink'
 import { useAuth } from '@/hooks/auth'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -17,6 +17,8 @@ const Navigation = ({ user }) => {
 
     const [open, setOpen] = useState(false)
 
+    const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
+
     return (
         <nav className="bg-white border-b border-gray-100">
             {/* Primary Navigation Menu */}
@@ -26,7 +28,10 @@ const Navigation = ({ user }) => {
                         {/* Logo */}
                         <div className="flex-shrink-0 flex items-center">
                             <Link href="/dashboard">
-                                <ApplicationLogo className="block h-10 w-auto fill-current text-gray-600" />
+                                <ApplicationLogo
+                                    src={`${baseURL}/storage/${user?.logo?.path}`}
+                                    className="block h-10 w-auto fill-current text-gray-600"
+                                />
                             </Link>
                         </div>
 
@@ -36,6 +41,11 @@ const Navigation = ({ user }) => {
                                 href="/dashboard"
                                 active={router.pathname === '/dashboard'}>
                                 Dashboard
+                            </NavLink>
+                            <NavLink
+                                href="/laporan"
+                                active={router.pathname === '/laporan'}>
+                                Laporan
                             </NavLink>
                         </div>
                     </div>
@@ -47,7 +57,7 @@ const Navigation = ({ user }) => {
                             width="48"
                             trigger={
                                 <button className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
-                                    <div>{user?.name}</div>
+                                    <div>{user?.user?.name}</div>
 
                                     <div className="ml-1">
                                         <svg
@@ -64,8 +74,12 @@ const Navigation = ({ user }) => {
                                 </button>
                             }>
                             {/* Authentication */}
+                            <DropdownLink href="/profil">Profil</DropdownLink>
+                            <DropdownLink href="/pengaturan">
+                                Pengaturan
+                            </DropdownLink>
                             <DropdownButton onClick={logout}>
-                                Logout
+                                Keluar
                             </DropdownButton>
                         </Dropdown>
                     </div>
