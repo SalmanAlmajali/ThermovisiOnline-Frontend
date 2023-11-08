@@ -5,7 +5,7 @@ import axios from '@/lib/axios'
 import { useEffect } from 'react'
 
 const useLaporan = ({ middleware, redirectIfAuthenticated } = {}) => {
-    const { logout } = useAuth
+    const { logout } = useAuth()
     const router = useRouter()
 
     const { data: laporan, error, mutate, isLoading: loading } = useSWR(
@@ -38,6 +38,20 @@ const useLaporan = ({ middleware, redirectIfAuthenticated } = {}) => {
                 if (error.response.status !== 422) throw error
 
                 setErrors(error.response.data.errors)
+            })
+    }
+
+    const getDetail = async ({ setLaporan, setErrors, id }) => {
+        await axios
+            .get(`/api/laporan/detail/${id}`)
+            .then(res => {
+                setLaporan(res.data)
+                setErrors({})
+            })
+            .catch(error => {
+                if (error.response.status !== 404) throw error
+
+                setErrors(error.response.data)
             })
     }
 
@@ -110,6 +124,7 @@ const useLaporan = ({ middleware, redirectIfAuthenticated } = {}) => {
         laporan,
         loading,
         storeLaporan,
+        getDetail,
         updateLaporan,
         destroyLaporan,
         uploadImport,

@@ -47,6 +47,11 @@ const Navigation = ({ user }) => {
                                 active={router.pathname === '/laporan'}>
                                 Laporan
                             </NavLink>
+                            <NavLink
+                                href="/file-manager"
+                                active={router.pathname === '/file-manager'}>
+                                File Manager
+                            </NavLink>
                         </div>
                     </div>
 
