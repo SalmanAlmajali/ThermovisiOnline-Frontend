@@ -49,7 +49,7 @@ const useLaporan = ({ middleware, redirectIfAuthenticated } = {}) => {
                 setErrors({})
             })
             .catch(error => {
-                if (error.response.status !== 404) throw error
+                if (error.response?.status !== 404) throw error
 
                 setErrors(error.response.data)
             })

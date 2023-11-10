@@ -11,7 +11,7 @@ const Folder = () => {
     const { getDetail } = useLaporan()
     const router = useRouter()
 
-    const [setLaporan] = useState({})
+    const [laporan, setLaporan] = useState({})
     const [errors, setErrors] = useState({})
 
     useEffect(() => {

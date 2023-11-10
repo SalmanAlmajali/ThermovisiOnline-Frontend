@@ -40,7 +40,7 @@ const Navigation = ({ user }) => {
                             <NavLink
                                 href="/dashboard"
                                 active={router.pathname === '/dashboard'}>
-                                Dashboard
+                                Dasbor
                             </NavLink>
                             <NavLink
                                 href="/laporan"
@@ -129,7 +129,17 @@ const Navigation = ({ user }) => {
                         <ResponsiveNavLink
                             href="/dashboard"
                             active={router.pathname === '/dashboard'}>
-                            Dashboard
+                            Dasbor
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href="/laporan"
+                            active={router.pathname === '/laporan'}>
+                            Laporan
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href="/file-manager"
+                            active={router.pathname === '/file-manager'}>
+                            File Manager
                         </ResponsiveNavLink>
                     </div>
 
@@ -154,15 +164,25 @@ const Navigation = ({ user }) => {
 
                             <div className="ml-3">
                                 <div className="font-medium text-base text-gray-800">
-                                    {user?.name}
+                                    {user?.user?.name}
                                 </div>
                                 <div className="font-medium text-sm text-gray-500">
-                                    {user?.email}
+                                    {user?.user?.email}
                                 </div>
                             </div>
                         </div>
 
                         <div className="mt-3 space-y-1">
+                            <ResponsiveNavLink
+                                href="/profil"
+                                active={router.pathname === '/profil'}>
+                                Profil
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                href="/pengaturan"
+                                active={router.pathname === '/pengaturan'}>
+                                Pengaturan
+                            </ResponsiveNavLink>
                             {/* Authentication */}
                             <ResponsiveNavButton onClick={logout}>
                                 Logout

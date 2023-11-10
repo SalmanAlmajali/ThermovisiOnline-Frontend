@@ -29,6 +29,7 @@ module.exports = {
     },
     plugins: ['react', '@next/eslint-plugin-next', 'prettier'],
     rules: {
+        'no-unused-vars': 0,
         'import/prefer-default-export': 0,
         'no-console': 'warn',
         'no-nested-ternary': 0,
@@ -45,7 +46,7 @@ module.exports = {
         'react/no-unescaped-entities': 0,
         'react/require-default-props': 0,
         'react/react-in-jsx-scope': 0,
-        'linebreak-style': ['error', 'unix'],
+        'linebreak-style': 0,
         semi: ['error', 'never'],
         'prettier/prettier': [
             'error',

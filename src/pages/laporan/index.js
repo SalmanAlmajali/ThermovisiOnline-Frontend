@@ -48,6 +48,7 @@ function index() {
         setJudul('')
         setStatus('')
         setProcessing(false)
+        setOpenModalUpload(false)
     }, [laporan])
 
     return (
@@ -113,7 +114,7 @@ function index() {
                                     </form>
                                 </header>
                             </section>
-                            <div className="mt-6 border rounded-md border-gray-200 shadow-md">
+                            <div className="mt-6 border rounded-md border-gray-200 shadow-md overflow-x-scroll">
                                 <table className="table-auto w-full">
                                     <thead>
                                         <tr className="border-b bg-gray-100 hover:bg-gray-200 transition-all duration-700">
@@ -149,7 +150,7 @@ function index() {
                                                                 item.created_at,
                                                             ).toLocaleDateString()}
                                                         </td>
-                                                        <td className="p-4 space-x-2">
+                                                        <td className="p-4 space-y-2 md:space-x-2">
                                                             <SecondaryButton
                                                                 onClick={() => {
                                                                     setOpenModalEdit(

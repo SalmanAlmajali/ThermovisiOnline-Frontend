@@ -32,7 +32,7 @@ const rejectStyle = {
 }
 
 function DropzoneComponent({ id }) {
-    const [files] = useState([])
+    const [files, setFiles] = useState([])
 
     const onDrop = useCallback(acceptedFiles => {
         acceptedFiles.map(file =>
@@ -94,9 +94,10 @@ function DropzoneComponent({ id }) {
         }
     }
 
-    const [setErrors] = useState([])
+    const [errors, setErrors] = useState([])
     const [status, setStatus] = useState('')
     const [cursorPaginate, setCursorPaginate] = useState('')
+    const [processing, setProcessing] = useState(false)
 
     const { images, storeData, destroyData } = useFileManager({
         middleware: 'auth',
@@ -110,6 +111,8 @@ function DropzoneComponent({ id }) {
     const uploadImage = e => {
         e.preventDefault()
 
+        setProcessing(true)
+
         storeData({
             setErrors,
             setStatus,
@@ -121,6 +124,8 @@ function DropzoneComponent({ id }) {
     const deleteImage = (e, id) => {
         e.preventDefault()
 
+        setProcessing(true)
+
         destroyData({
             id: id,
         })
@@ -130,6 +135,7 @@ function DropzoneComponent({ id }) {
     useEffect(() => {
         files.splice(0, files.length)
         setStatus('')
+        setProcessing(false)
     }, [images])
 
     return (
@@ -140,12 +146,14 @@ function DropzoneComponent({ id }) {
                 <div className="flex gap-4 flex-wrap mt-2">{thumbs}</div>
             </div>
             <div className="mt-6">
-                <Button onClick={uploadImage}>Upload</Button>
+                <Button onClick={uploadImage} disabled={processing}>
+                    {processing ? 'Processing...' : 'Upload'}
+                </Button>
                 <div className="mt-6">
                     <AuthSessionStatus status={status} />
                 </div>
             </div>
-            <div className="mt-6 border rounded-md border-gray-200 shadow-md">
+            <div className="mt-6 border rounded-md border-gray-200 shadow-md overflow-x-scroll">
                 <table className="table-auto w-full">
                     <thead>
                         <tr className="border-b bg-gray-100 hover:bg-gray-200 transition-all duration-700">
@@ -188,8 +196,9 @@ function DropzoneComponent({ id }) {
                                 </td>
                                 <td>
                                     <DangerButton
-                                        onClick={e => deleteImage(e, item.id)}>
-                                        Hapus
+                                        onClick={e => deleteImage(e, item.id)}
+                                        disabled={processing}>
+                                        {processing ? 'Processing...' : 'Hapus'}
                                     </DangerButton>
                                 </td>
                             </tr>
@@ -197,7 +206,7 @@ function DropzoneComponent({ id }) {
                     </tbody>
                 </table>
             </div>
-            <div className="flex justify-between mt-4 p-4">
+            <div className="flex flex-col gap-y-2 justify-between mt-4 p-4 sm:flex-row sm:gap-0">
                 <p className="text-slate-400">
                     {images?.datas?.data?.length} Total Records
                 </p>
