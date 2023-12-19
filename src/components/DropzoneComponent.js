@@ -153,7 +153,7 @@ function DropzoneComponent({ id }) {
                     <AuthSessionStatus status={status} />
                 </div>
             </div>
-            <div className="mt-6 border rounded-md border-gray-200 shadow-md overflow-x-scroll">
+            <div className="mt-6 border rounded-md border-gray-200 shadow-md overflow-x-scroll scrollbar scrollbar-thumb-gray-200 scrollbar-track-gray-100">
                 <table className="table-auto w-full">
                     <thead>
                         <tr className="border-b bg-gray-100 hover:bg-gray-200 transition-all duration-700">
@@ -165,77 +165,108 @@ function DropzoneComponent({ id }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {images?.datas?.data?.map((item, i) => (
-                            <tr
-                                key={i}
-                                className="border-b hover:bg-gray-200 transition-all duration-700">
-                                <td className="p-4 ">{i + 1}</td>
-                                <td className="p-4 ">
-                                    <div
-                                        style={{
-                                            backgroundImage: `url(${baseURL}/storage/${item?.path})`,
-                                        }}
-                                        className="aspect-square w-20 h-20 rounded-md overflow-hidden bg-cover bg-center shadow-md"
-                                        onClick={() => {
-                                            window.open(
-                                                `${baseURL}/storage/${item?.path}`,
-                                                '_blank',
-                                            )
-                                        }}
-                                    />
-                                </td>
-                                <td className="p-4 ">{item.file_name}</td>
-                                <td className="p-4 ">
-                                    {new Date(
-                                        item.created_at,
-                                    ).toLocaleDateString('id')}
-                                    &nbsp;
-                                    {new Date(
-                                        item.created_at,
-                                    ).toLocaleTimeString('id')}
-                                </td>
-                                <td>
-                                    <DangerButton
-                                        onClick={e => deleteImage(e, item.id)}
-                                        disabled={processing}>
-                                        {processing ? 'Processing...' : 'Hapus'}
-                                    </DangerButton>
+                        {images?.datas?.data?.length > 0 ? (
+                            images?.datas?.data?.map((item, i) => (
+                                <tr
+                                    key={i}
+                                    className="border-b hover:bg-gray-200 transition-all duration-700">
+                                    <td className="p-4 ">{i + 1}</td>
+                                    <td className="p-4 ">
+                                        <div
+                                            style={{
+                                                backgroundImage: `url(${baseURL}/storage/${item?.path})`,
+                                            }}
+                                            className="aspect-square w-20 h-20 rounded-md overflow-hidden bg-cover bg-center shadow-md"
+                                            onClick={() => {
+                                                window.open(
+                                                    `${baseURL}/storage/${item?.path}`,
+                                                    '_blank',
+                                                )
+                                            }}
+                                        />
+                                    </td>
+                                    <td className="p-4 ">{item.file_name}</td>
+                                    <td className="p-4 ">
+                                        {new Date(
+                                            item.created_at,
+                                        ).toLocaleDateString('id')}
+                                        &nbsp;
+                                        {new Date(
+                                            item.created_at,
+                                        ).toLocaleTimeString('id')}
+                                    </td>
+                                    <td>
+                                        <DangerButton
+                                            onClick={e =>
+                                                deleteImage(e, item.id)
+                                            }
+                                            disabled={processing}>
+                                            {processing
+                                                ? 'Processing...'
+                                                : 'Hapus'}
+                                        </DangerButton>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" className="p-4 text-center">
+                                    Tidak ada data
                                 </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>
-            <div className="flex flex-col gap-y-2 justify-between mt-4 p-4 sm:flex-row sm:gap-0">
-                <p className="text-slate-400">
-                    {images?.datas?.data?.length} Total Records
-                </p>
-                <div className="flex gap-x-4">
-                    <Button
-                        onClick={() => {
-                            images?.datas.prev_cursor == null
-                                ? setCursorPaginate('#')
-                                : setCursorPaginate(
-                                      `${images?.datas?.prev_cursor}`,
-                                  )
-                            // mutate()
-                        }}
-                        disabled={images?.datas.prev_cursor == null}>
-                        Previous
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            images?.datas.next_cursor == null
-                                ? setCursorPaginate('#')
-                                : setCursorPaginate(
-                                      `${images?.datas?.next_cursor}`,
-                                  )
-                            // mutate()
-                        }}
-                        disabled={images?.datas.next_cursor == null}>
-                        Next
-                    </Button>
-                </div>
+            <div className="mt-4 flex items-center gap-x-4">
+                <Button
+                    onClick={() => {
+                        images?.datas.prev_cursor == null
+                            ? setCursorPaginate('#')
+                            : setCursorPaginate(`${images?.datas?.prev_cursor}`)
+                        // mutate()
+                    }}
+                    disabled={images?.datas.prev_cursor == null}
+                    className="gap-x-2  font-bold italic">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                        />
+                    </svg>
+                    Prev
+                </Button>
+                <Button
+                    onClick={() => {
+                        images?.datas.next_cursor == null
+                            ? setCursorPaginate('#')
+                            : setCursorPaginate(`${images?.datas?.next_cursor}`)
+                        // mutate()
+                    }}
+                    disabled={images?.datas.next_cursor == null}
+                    className="gap-x-2  font-bold italic">
+                    Next
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                        />
+                    </svg>
+                </Button>
             </div>
         </section>
     )

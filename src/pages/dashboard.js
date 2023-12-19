@@ -12,8 +12,6 @@ const Dashboard = () => {
         middleware: 'auth',
     })
 
-    console.log(dashboard)
-
     return (
         <AppLayout
             header={

@@ -7,9 +7,11 @@ import AuthSessionStatus from '../AuthSessionStatus'
 import SecondaryButton from '../SecodaryButton'
 import Button from '../Button'
 import useLaporan from '@/hooks/laporan'
+import moment from 'moment/moment'
 
 function EditLaporan(props) {
-    const [judul, setJudul] = useState('')
+    const [lokasi, setLokasi] = useState('')
+    const [tanggalPelaksanaan, setTanggalPelaksanaan] = useState('')
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState('')
     const [processing, setProcessing] = useState(false)
@@ -17,6 +19,7 @@ function EditLaporan(props) {
     const { laporan, updateLaporan } = useLaporan({
         middleware: 'auth',
         redirectIfAuthenticated: '/dashboard',
+        cursorPaginate: null,
     })
 
     const handleSubmit = e => {
@@ -25,7 +28,8 @@ function EditLaporan(props) {
         setProcessing(true)
 
         updateLaporan({
-            judul,
+            lokasi,
+            tanggal_pelaksanaan: tanggalPelaksanaan,
             id: props.id.id,
             setErrors,
             setStatus,
@@ -33,14 +37,17 @@ function EditLaporan(props) {
     }
 
     useEffect(() => {
-        setJudul(props.id.text)
+        setLokasi(props?.id?.text?.lokasi)
+        setTanggalPelaksanaan(
+            moment(props?.id?.text?.tanggal_pelaksanaan).format('yyyy-MM-DD'),
+        )
 
         return () => {
             setStatus('')
             setProcessing(false)
             props.setOpenModalEdit(false)
         }
-    }, [props.id.text, laporan])
+    }, [props?.id?.text?.lokasi, laporan])
 
     return (
         <Modal
@@ -48,22 +55,41 @@ function EditLaporan(props) {
             onClose={() => props.setOpenModalEdit(false)}>
             <form onSubmit={handleSubmit} className="p-6">
                 <div>
-                    <Label htmlFor="judul">Judul Laporan</Label>
+                    <Label htmlFor="judul_edit">Lokasi</Label>
 
                     <Input
-                        id="judul"
+                        id="judul_edit"
                         type="text"
-                        value={judul}
+                        value={lokasi}
                         className="block mt-1 w-full px-3 py-2 border border-gray-300"
                         required
-                        onChange={e => setJudul(e.target.value)}
+                        onChange={e => setLokasi(e.target.value)}
                         autoFocus
                     />
 
                     <InputError messages={errors.judul} className="mt-2" />
-
-                    <AuthSessionStatus className="mt-4" status={status} />
                 </div>
+                <div className="mt-4">
+                    <Label htmlFor="tanggal_pelaksanaan">
+                        Tanggal Pelaksanaan
+                    </Label>
+
+                    <Input
+                        id="tanggal_pelaksanaan"
+                        type="date"
+                        value={tanggalPelaksanaan}
+                        className="block mt-1 w-full px-3 py-2 border border-gray-300"
+                        required
+                        onChange={e => setTanggalPelaksanaan(e.target.value)}
+                        autoFocus
+                    />
+
+                    <InputError
+                        messages={errors.tanggal_pelaksanaan}
+                        className="mt-2"
+                    />
+                </div>
+                <AuthSessionStatus className="mt-4" status={status} />
                 <div className="mt-6 flex justify-end">
                     <SecondaryButton
                         onClick={() => props.setOpenModalEdit(false)}>

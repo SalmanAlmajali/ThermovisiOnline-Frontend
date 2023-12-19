@@ -1,11 +1,14 @@
+import Button from '@/components/Button'
 import AppLayout from '@/components/Layouts/AppLayout'
 import { useAuth } from '@/hooks/auth'
 import useLaporan from '@/hooks/laporan'
 import Head from 'next/head'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function index() {
+    const [cursor, setCursor] = useState()
+
     const { user } = useAuth({
         middleware: 'auth',
         redirectIfAuthenticated: '/dashboard',
@@ -14,6 +17,7 @@ export default function index() {
     const { laporan } = useLaporan({
         middleware: 'auth',
         redirectIfAuthenticated: '/dashboard',
+        cursorPaginate: cursor,
     })
 
     return (
@@ -63,7 +67,7 @@ export default function index() {
                                                     />
                                                 </svg>
                                                 <h1 className="tracking-tight">
-                                                    {item.judul}
+                                                    {item.lokasi}
                                                 </h1>
                                             </div>
                                             <p className="text-sm text-slate-500">
@@ -74,6 +78,54 @@ export default function index() {
                                         </Link>
                                     )
                                 })}
+                            </div>
+                            <div className="mt-4 flex items-center gap-x-4">
+                                <Button
+                                    disabled={
+                                        laporan?.datas?.prev_cursor == null
+                                    }
+                                    onClick={() =>
+                                        setCursor(laporan?.datas?.prev_cursor)
+                                    }
+                                    className="gap-x-2  font-bold italic">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="w-4 h-4">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                                        />
+                                    </svg>
+                                    Prev
+                                </Button>
+                                <Button
+                                    disabled={
+                                        laporan?.datas?.next_cursor == null
+                                    }
+                                    onClick={() =>
+                                        setCursor(laporan?.datas?.next_cursor)
+                                    }
+                                    className="gap-x-2 font-bold italic">
+                                    Next
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="w-4 h-4">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                        />
+                                    </svg>
+                                </Button>
                             </div>
                         </div>
                     </div>

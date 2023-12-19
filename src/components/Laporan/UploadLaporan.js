@@ -26,6 +26,7 @@ function UploadLaporan(props) {
             id: props?.id?.id,
             setErrors,
             setStatus,
+            setProcessing,
         })
     }
 
@@ -37,7 +38,7 @@ function UploadLaporan(props) {
             setErrors([])
             setStatus('')
         }
-    }, [laporan])
+    }, [laporan, status])
 
     return (
         <Modal

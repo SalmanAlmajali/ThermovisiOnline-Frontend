@@ -4,16 +4,35 @@ import useSWR from 'swr'
 import axios from '@/lib/axios'
 import { useEffect } from 'react'
 
-const useLaporan = ({ middleware, redirectIfAuthenticated } = {}) => {
+const useLaporan = ({
+    middleware,
+    redirectIfAuthenticated,
+    cursorPaginate,
+    attribute,
+    search,
+} = {}) => {
     const { logout } = useAuth()
     const router = useRouter()
 
-    const { data: laporan, error, mutate, isLoading: loading } = useSWR(
-        '/api/laporan',
+    const { data: laporan, error, mutate } = useSWR(
+        '/api/laporan?cursor=' +
+            cursorPaginate +
+            '&attribute=' +
+            attribute +
+            '&search=' +
+            search,
         () =>
             axios
-                .get('/api/laporan')
-                .then(res => res.data)
+                .get('/api/laporan', {
+                    params: {
+                        cursor: cursorPaginate,
+                        attribute: attribute,
+                        search: search,
+                    },
+                })
+                .then(res => {
+                    return res.data
+                })
                 .catch(error => {
                     if (error.response.status !== 409) throw error
 
@@ -84,7 +103,13 @@ const useLaporan = ({ middleware, redirectIfAuthenticated } = {}) => {
             })
     }
 
-    const uploadImport = async ({ setStatus, setErrors, id, ...props }) => {
+    const uploadImport = async ({
+        setStatus,
+        setErrors,
+        id,
+        setProcessing,
+        ...props
+    }) => {
         await csrf()
 
         setErrors([])
@@ -105,6 +130,7 @@ const useLaporan = ({ middleware, redirectIfAuthenticated } = {}) => {
             .catch(error => {
                 if (error.response.status !== 422) throw error
 
+                setProcessing(false)
                 setErrors(error.response.data.errors)
             })
     }
@@ -122,7 +148,6 @@ const useLaporan = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     return {
         laporan,
-        loading,
         storeLaporan,
         getDetail,
         updateLaporan,
