@@ -125,7 +125,7 @@ const useLaporan = ({
             })
             .then(res => {
                 setStatus(res.data.message)
-                mutate()
+                setProcessing(true)
             })
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -148,6 +148,7 @@ const useLaporan = ({
 
     return {
         laporan,
+        mutate,
         storeLaporan,
         getDetail,
         updateLaporan,

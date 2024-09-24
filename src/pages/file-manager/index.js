@@ -1,13 +1,19 @@
 import Button from '@/components/Button'
+import Input from '@/components/Input'
+import Label from '@/components/Label'
 import AppLayout from '@/components/Layouts/AppLayout'
+import Select from '@/components/Select'
 import { useAuth } from '@/hooks/auth'
 import useLaporan from '@/hooks/laporan'
+import debounce from 'lodash.debounce'
 import Head from 'next/head'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
 export default function index() {
     const [cursor, setCursor] = useState()
+    const [attribute, setAttribute] = useState('')
+    const [search, setSearch] = useState('')
 
     const { user } = useAuth({
         middleware: 'auth',
@@ -18,6 +24,8 @@ export default function index() {
         middleware: 'auth',
         redirectIfAuthenticated: '/dashboard',
         cursorPaginate: cursor,
+        attribute: attribute,
+        search: search,
     })
 
     return (
@@ -45,6 +53,10 @@ export default function index() {
                                     </p>
                                 </header>
                             </section>
+                            <Search
+                                setAttribute={setAttribute}
+                                setSearch={setSearch}
+                            />
                             <div className="flex flex-col gap-y-2 mt-6">
                                 {laporan?.datas?.data?.map((item, i) => {
                                     return (
@@ -132,5 +144,57 @@ export default function index() {
                 </div>
             </div>
         </AppLayout>
+    )
+}
+
+const Search = ({ setAttribute, setSearch }) => {
+    const [tempAttr, setTempAttr] = useState('')
+
+    const debounceSearch = debounce(e => {
+        setAttribute(tempAttr)
+        setSearch(e.target.value)
+    }, 3000)
+
+    return (
+        <div>
+            <h2 className="text-lg font-medium text-gray-900">Pencarian</h2>
+            <p className="mt-1 text-sm text-gray-600">
+                Cari data anda berdasarkan tanggal pelaksanaan atau lokasi.
+            </p>
+            <div className="mt-4 flex gap-x-2">
+                <div>
+                    <Label htmlFor="attribute">Cari Berdasarkan</Label>
+
+                    <Select
+                        id="attribute"
+                        defaultValue={tempAttr}
+                        onChange={e => setTempAttr(e.target.value)}
+                        className="mt-2"
+                        required>
+                        <option value="">-</option>
+                        <option value="lokasi">Lokasi</option>
+                        <option value="tanggal_pelaksanaan">
+                            Tanggal Pelaksanaan
+                        </option>
+                    </Select>
+                </div>
+                <div>
+                    <Label htmlFor="search">Kata Kunci</Label>
+
+                    <Input
+                        id="search"
+                        type={
+                            tempAttr == 'tanggal_pelaksanaan'
+                                ? 'date'
+                                : 'search'
+                        }
+                        className="mt-2 w-96"
+                        // value={search}
+                        onChange={debounceSearch}
+                        required
+                    />
+                </div>
+            </div>
+        </div>
     )
 }

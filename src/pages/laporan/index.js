@@ -8,7 +8,6 @@ import DeleteLaporan from '@/components/Laporan/DeleteLaporan'
 import EditLaporan from '@/components/Laporan/EditLaporan'
 import UploadLaporan from '@/components/Laporan/UploadLaporan'
 import AppLayout from '@/components/Layouts/AppLayout'
-import Modal from '@/components/Modal'
 import SecondaryButton from '@/components/SecodaryButton'
 import Select from '@/components/Select'
 import { useAuth } from '@/hooks/auth'
@@ -28,8 +27,6 @@ function index() {
 
     const [attribute, setAttribute] = useState('')
     const [search, setSearch] = useState('')
-
-    const [openModalDownload, setOpenModalDownload] = useState(false)
 
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const [openModalDelete, setOpenModalDelete] = useState(false)
@@ -227,36 +224,15 @@ function index() {
                                                                 }}>
                                                                 Edit
                                                             </SecondaryButton>
-                                                            {item.thermovisis_count !=
-                                                            0 ? (
-                                                                <Button
-                                                                    onClick={() => {
-                                                                        setOpenModalDownload(
-                                                                            true,
-                                                                        )
-                                                                        setId({
-                                                                            id:
-                                                                                item.id,
-                                                                        })
-                                                                    }}>
-                                                                    Download
-                                                                    Laporan
-                                                                </Button>
-                                                            ) : (
-                                                                <SecondaryButton
-                                                                    onClick={() => {
-                                                                        setOpenModalUpload(
-                                                                            true,
-                                                                        )
-                                                                        setId({
-                                                                            id:
-                                                                                item.id,
-                                                                        })
-                                                                    }}>
-                                                                    Input Data
+                                                            <Link
+                                                                href={
+                                                                    '/laporan/detail/' +
+                                                                    item.id
+                                                                }>
+                                                                <Button>
                                                                     Thermovisi
-                                                                </SecondaryButton>
-                                                            )}
+                                                                </Button>
+                                                            </Link>
                                                         </td>
                                                         <td className="p-4">
                                                             <DangerButton
@@ -349,16 +325,6 @@ function index() {
                 setOpenModalDelete={setOpenModalDelete}
                 id={id}
             />
-            <UploadLaporan
-                openModalUpload={openModalUpload}
-                setOpenModalUpload={setOpenModalUpload}
-                id={id}
-            />
-            <DownloadModal
-                show={openModalDownload}
-                onClose={() => setOpenModalDownload(false)}
-                id={id.id}
-            />
         </AppLayout>
     )
 }
@@ -414,34 +380,5 @@ const Search = ({ setAttribute, setSearch }) => {
                 </div>
             </div>
         </div>
-    )
-}
-
-const DownloadModal = ({ show, onClose, id }) => {
-    return (
-        <Modal show={show} onClose={onClose} maxWidth="xl">
-            <div className="p-6 flex flex-col gap-y-2">
-                <Button className="w-full bg-green-600 justify-center py-6 hover:bg-green-500 active:bg-green-900 focus:border-green-900 ring-green-300">
-                    <Link
-                        href={
-                            process.env.NEXT_PUBLIC_BACKEND_URL +
-                            '/api/laporan/' +
-                            id
-                        }>
-                        Download As Excel
-                    </Link>
-                </Button>
-                <Button className="w-full bg-red-600 justify-center py-6 hover:bg-red-500 active:bg-red-900 focus:border-red-900 ring-red-300">
-                    <Link
-                        href={
-                            process.env.NEXT_PUBLIC_BACKEND_URL +
-                            '/api/laporan/pdf/' +
-                            id
-                        }>
-                        Download As PDF
-                    </Link>
-                </Button>
-            </div>
-        </Modal>
     )
 }

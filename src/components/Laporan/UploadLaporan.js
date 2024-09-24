@@ -8,10 +8,9 @@ import Button from '../Button'
 import useLaporan from '@/hooks/laporan'
 import AuthSessionStatus from '../AuthSessionStatus'
 
-function UploadLaporan(props) {
+function UploadLaporan({ processing, setProcessing, ...props }) {
     const [file, setFile] = useState([])
     const [errors, setErrors] = useState([])
-    const [processing, setProcessing] = useState(false)
     const [status, setStatus] = useState('')
 
     const { laporan, uploadImport } = useLaporan()
@@ -23,7 +22,7 @@ function UploadLaporan(props) {
 
         uploadImport({
             file,
-            id: props?.id?.id,
+            id: props?.id,
             setErrors,
             setStatus,
             setProcessing,
@@ -37,13 +36,12 @@ function UploadLaporan(props) {
             setProcessing(false)
             setErrors([])
             setStatus('')
+            props.setIsOpen(0)
         }
     }, [laporan, status])
 
     return (
-        <Modal
-            show={props.openModalUpload}
-            onClose={() => props.setOpenModalUpload(false)}>
+        <Modal show={props.isOpen == 4} onClose={() => props.setIsOpen(0)}>
             <form onSubmit={handleSubmit} className="p-6">
                 <h2 className="text-lg font-medium text-gray-900">
                     Upload laporan thermovisi anda disini
@@ -72,8 +70,7 @@ function UploadLaporan(props) {
                     <AuthSessionStatus className="mt-2" status={status} />
                 </div>
                 <div className="mt-6 flex justify-end">
-                    <SecondaryButton
-                        onClick={() => props.setOpenModalUpload(false)}>
+                    <SecondaryButton onClick={() => props.setIsOpen(0)}>
                         Batal
                     </SecondaryButton>
 
