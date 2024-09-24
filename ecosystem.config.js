@@ -9,6 +9,7 @@ module.exports = {
         production: {
             user: 'root',
             host: '103.23.30.133',
+            port: '65002',
             ref: 'origin/main',
             repo:
                 'https://github.com/SalmanAlmajali/ThermovisiOnline-Frontend.git',
